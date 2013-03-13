@@ -1,12 +1,10 @@
- ==================
-| TypeX Emulation |
- ==================
+# TypeX Emulation
 
-This is a Javascript implementation of the British Cipher Machine - TypeX. I have translated this to Javascript from a [version written in C][1].
+This is a Javascript implementation of the British Rotor Cipher Machine - [TypeX][2]. The Enigma has been used as a basis for this code as they have very similar workings, this version is a translation to Javascript from a [version written in C][1]. 
 
 Improvements that I have made to the original code include:
 
-1. It no longer uses files for input / output.
+1. No longer relies on files for input / output.
 2. I have broken down the transformation into a better (more readable) format:
 
 The transformation steps are: 
@@ -27,27 +25,33 @@ The transformation steps are:
 
 3. I wrote this with the intention of using it in a brute force attack. To do this we can iterate through all possible rotor settings / orientations. Please see brute_force.js for an example.
 
-4. Input validation has been modularised.
+4. Input validation is cleaner.
 
 5. Removed goto's, general housekeeping.
+
+6. Speed is almost double to that of the C implementation due to caching and no file read / writes (which helps when it comes to brute forcing).
 
 ##### Example 1 - Encoding
 ```javascript
 var demo1 = TypeX.init('01234', '00100', 'AOAKN', 'This is the string to be encoded');
-console.log(demo1);
 //demo1 == KLHESNYNIMQAZHIZROBHDZHKWRQFFRTY
 ```
 
 ##### Example 2 - Decoding
 ```javascript
 var demo2 = TypeX.init('01234', '00100', 'AOAKN', 'KLHESNYNIMQAZHIZROBHDZHKWRQFFRTY');
-console.log(demo2);
 //demo2 == THISXISXTHEXSTRINGXTOXBEXENCODED
 ```
 
 ##### Brute Force
 
-The code in brute_force.js loops through every possible rotor position and orientation. This assumes that we know the indicator key.
+The code in brute_force.js loops through every possible rotor position and orientation. It then inserts (in batches) the results into a Mongo collection.
+
+To run this Javascript you will need Node with the [native Mongo module][3] installed.
+
+The brute force method assumes that we know the indicator key.
+
+The indicator key is 5 letters (A-Z), that indicate the starting position of each rotor.
 
 ```javascript
 //Rotor orientations (5^2)
@@ -73,8 +77,12 @@ if((/(\d)(?=.*\1)/).test(rotorPos)) continue;
 var cipher_text = TypeX.init(rotorPos, rotorOri, 'AOAKN', 'KLHESNYNIMQAZHIZROBHDZHKWRQFFRTY');
 ```
 
-In the above example, there are 215,000 possible rotor settings, of which we can harvest them into a database. We can then crawl this database and search for cribs, or we can perform a common bigram / trigram count which is probably an easier way to reduce this number.
+In the above example, there are 215,000 possible rotor settings, we can then harvest them into a database for further processing.
 
-See function ngram(str, n) in brute_force.js for an example of how to add these counts to your database.
+We can then crawl this database and search for cribs, or we can perform a common bigram / trigram count which is probably an easier way to reduce this number.
+
+See brute_force.js for an example of how to add an ngram count to your database.
 
 [1]: http://scholarworks.sjsu.edu/cgi/viewcontent.cgi?article=1244&context=etd_projects
+[2]: http://en.wikipedia.org/wiki/Typex
+[3]: https://github.com/mongodb/node-mongodb-native
