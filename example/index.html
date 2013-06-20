@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <style>
+            textarea {
+                vertical-align: middle;
+            }
+            div span {
+                font-size: 70%;
+            }
+        </style>
+        <script>
+            function crypt() {
+                var pos = document.getElementById('pos').value;
+                var ori = document.getElementById('ori').value;
+                var rot = document.getElementById('rot').value;
+                var str = document.getElementById('source_text').value;
+
+                document.getElementById('destination_text').value = TypeX.init(pos,ori,rot,str);
+            }
+        </script>
+        <script src="../typex.js"></script>
+    </head>
+    <body>
+        <h1>Typex</h1>
+        <div>
+            <textarea cols="50" rows="10" name="source_text" id="source_text" placeholder="Input text to be encoded/decoded (Input string must be A-Z, spaces are OK)"></textarea>
+            <button id="crypt" onclick="crypt()">Encode/Decode</button>
+            <textarea cols="50" rows="10" name="destination_text" id="destination_text" placeholder="The result"></textarea>
+        </div>
+
+        <h2>Parameters</h2>
+        <div>
+            <label>Rotor Order : </label>
+            <input type="text" name="pos" id="pos" value="13042"/>
+            <span>(Selected rotors must be 0-7, configured for 5 rotors)</span>
+        </div>
+        <div>
+            <label>Turnover : </label>
+            <input type="text" name="ori" id="ori" value="01000"/>
+            <span>(must be 0/1, 1 = reversed)</span>
+        </div>
+        <div>
+            <label>Rotor starting positions (left to right) : </label>
+            <input type="text" name="rot" id="rot" value="AOAKN"/>
+            <span>(A-Z)</span>
+        </div>
+    </body>
+</html>
