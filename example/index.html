@@ -1,26 +1,9 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
     <head>
-        <title></title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <style>
-            textarea {
-                vertical-align: middle;
-            }
-            div span {
-                font-size: 70%;
-            }
-        </style>
-        <script>
-            function crypt() {
-                var pos = document.getElementById('pos').value;
-                var ori = document.getElementById('ori').value;
-                var rot = document.getElementById('rot').value;
-                var str = document.getElementById('source_text').value;
-
-                document.getElementById('destination_text').value = TypeX.init(pos,ori,rot,str);
-            }
-        </script>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="style.css" class="css">
+        <script src="script.js"></script>
         <script src="../typex.js"></script>
     </head>
     <body>

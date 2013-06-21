@@ -1,4 +1,4 @@
-# Typex Emulator
+# Typex Simulator
 
 This is a Javascript implementation of the British Rotor Cipher Machine - [Typex][2].
 
